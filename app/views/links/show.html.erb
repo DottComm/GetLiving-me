@@ -1,0 +1,12 @@
+<p>
+  <strong>Title:</strong>
+  <%= @link.title %>
+</p>
+
+<p>
+  <strong>Url:</strong>
+  <%= @link.url %>
+</p>
+
+<%= link_to 'Edit', edit_link_path(@link) %> |
+<%= link_to 'Back', group_path(session[:current_group_id]) %>

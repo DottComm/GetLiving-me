@@ -1,0 +1,79 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-xs-8">
+      <h1 class="group-title"><%= @group.name %></h1>
+    </div>
+    <div class="col-xs-4">
+      <%= link_to 'Create Experience', new_link_path, { :class => "btn btn-primary pull-right create-btn"} %>
+    </div>
+  </div>
+</div>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>You In?</th>
+      <th>Votes</th>
+      <th>Experience</th>
+      <th>Who's In?</th>
+      <th>Submitted By</th>
+      <th>Options</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @sorted_links.reverse!.each do |link| %>
+      <tr>
+        <td>
+          <span class="vote-btn">
+            <!-- http://stackoverflow.com/questions/26850195/check-if-user-voted-acts-as-votable-->
+            <% if current_user.voted_for? link %>
+              <%= link_to unlike_link_path(link), method: :put do %>
+                <button>
+                I'm Out
+                </button>
+              <% end %>
+            <% else %>
+              <%= link_to like_link_path(link), method: :put do %>
+                <button>
+                I'm In
+                </button>
+              <% end %>
+            <% end %>
+          </span>
+        </td>
+        <td>
+          <span class="upvotes-size">
+          <%= link.get_upvotes.size %>
+          </span>
+        </td>
+        <td>
+          <%= link_to link.title, "#{link.url}" %>
+        </td>
+        <td>
+          <% link.get_upvotes.each do |upvote| %>
+            <span class="voter-image">
+              <%= image_tag(User.find(upvote.voter_id).image, { size: "25x25", alt: User.find(upvote.voter_id).name }) %>
+            </span>
+          <% end %>
+        </td>
+        <td>
+          <%= "#{link.user.name}" %>
+        </td>
+        <td>
+          <span class="link-options">
+          <!-- Only show options on owned links-->
+          <% if link.user == current_user %>
+            <%= link_to 'Edit Link', edit_link_path(link) %> |
+            <%= link_to 'Destroy Link', link, method: :delete, data: { confirm: 'Are you sure?' } %>
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<p>
+  <%= link_to 'Group Settings', edit_group_path(@group) %> |
+  <%= link_to 'Show All Groups', groups_path %>
+</p>

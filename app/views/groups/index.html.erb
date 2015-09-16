@@ -1,0 +1,36 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-xs-8">
+      <h1 class="group-title">Groups</h1>
+    </div>
+    <div class="col-xs-4">
+      <%= link_to 'Create Group', new_group_path, { :class => "btn btn-primary pull-right"} %>
+    </div>
+  </div>
+</div>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Group Name</th>
+      <th>Options</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @groups.each do |group| %>
+      <tr>
+        <td><%= link_to group.name, group_path(group) %></td>
+        <td>
+          <!-- Only show options on owned links-->
+          <% if group.user == current_user %>
+            <span class="link-options">
+              <%= link_to 'Edit Group', edit_group_path(group) %> |
+              <%= link_to 'Destroy Group', group, method: :delete, data: { confirm: 'Are you sure?' } %>
+            </span>
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

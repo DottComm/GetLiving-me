@@ -1,0 +1,30 @@
+<h1><%= "Every Single Link" %></h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Title</th>
+      <th>Url</th>
+      <th>Submitter</th>
+      <th colspan="2">Options</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <!-- ERROR: undefined method `links' for nil:NilClass -->
+    <% current_user.links.each do |link| %>
+      <tr>
+        <td><%= link.title %></td>
+        <td><%= link.url %></td>
+        <td><%= link.user.name %></td>
+
+        <!-- Only show options on owned links-->
+        <% if link.user == current_user %>
+          <td><%= link_to 'Edit', edit_link_path(link) %></td>
+          <td><%= link_to 'Destroy', link, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <% end %>
+
+      </tr>
+    <% end %>
+  </tbody>
+</table>

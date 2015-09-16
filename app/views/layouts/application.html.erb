@@ -1,14 +1,80 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>GetLivingMe</title>
+  <title>#ProjectLiveIt</title>
   <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
   <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
   <%= csrf_meta_tags %>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="UTF-8">
+  <meta name="google" content="notranslate">
+  <meta http-equiv="Content-Language" content="en">
 </head>
 <body>
 
-<%= yield %>
+<!-- FACEBOOK LOGIN -->
+<script>
+  window.fbAsyncInit = function() {
+    FB.init({
+      appId      : '1176657119011900',
+      xfbml      : true,
+      version    : 'v2.4'
+    });
+  };
+
+  (function(d, s, id){
+     var js, fjs = d.getElementsByTagName(s)[0];
+     if (d.getElementById(id)) {return;}
+     js = d.createElement(s); js.id = id;
+     js.src = "//connect.facebook.net/en_US/sdk.js";
+     fjs.parentNode.insertBefore(js, fjs);
+   }(document, 'script', 'facebook-jssdk'));
+</script>
+<!-- END FACEBOOK LOGIN -->
+
+  <nav class="navbar navbar-default">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a href="/">
+          <% if user_signed_in? %>
+            <%= image_tag(current_user.image, { :class=>"navbar-brand", alt: current_user.name }) %>
+          <% end %>
+          <p class="navbar-text site-title ">#ProjectLiveIt</p>
+        </a>
+      </div>
+      <div id="navbar" class="navbar-collapse collapse">
+        <ul class="nav navbar-nav navbar-right">
+          <% if user_signed_in? %>
+            <p class="navbar-text"><%= current_user.name %></p>
+            <li><%= link_to 'Account', edit_user_registration_path %></li>
+            <li><%= link_to 'Sign out', destroy_user_session_path, :method => :delete %></li>
+          <% else %>
+              <li><%= link_to 'Join Shallwi', new_user_registration_path %></li>
+              <li><%= link_to 'Sign In', new_user_session_path %></li>
+          <% end %>
+        </ul>
+        <form class="navbar-form navbar-right">
+          <input type="text" class="form-control" placeholder="Search...">
+        </form>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container-fluid">
+
+    <p id="notice"><%= notice %></p>
+    <p id="alert"><%= alert %></p>
+
+    <!-- YIELD HERE -->
+    <%= yield %>
+
+  </div>
 
 </body>
 </html>
